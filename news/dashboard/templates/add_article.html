@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+ {% block content %}
+    
+        <div class="content-wrapper">
+
+            {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-center alert-dismissible" style="margin-top: 10px;" role="alert">
+                    {{ message }}
+                </div>
+             {% endfor %}
+         {% endif %}
+
+            <!-- START PAGE CONTENT-->
+            <div class="page-heading">
+                <h1 class="page-title">Add Article</h1>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html"><i class="la la-home font-20"></i></a>
+                    </li>
+                    <li class="breadcrumb-item">Add Article</li>
+                </ol>
+            </div>
+            <div class="page-content fade-in-up">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-head">
+                                <div class="ibox-title">Add Article</div>
+                                <div class="ibox-tools">
+                                    <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                                    <a class="fullscreen-link"><i class="fa fa-expand"></i></a>
+                                </div>
+                            </div>
+                            <div class="ibox-body">
+                                 <form class="form-horizontal" action="{% url 'add_article' %}" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                <form class="form-horizontal">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Headline</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control headline" type="text" name="headline" placeholder="headline">
+                                            <span class="headline-error" style="display: none; color: red;"> headline is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Description</label>
+                                        <div class="col-sm-10">
+                                          <textarea class="form-control description" name="description" rows="3"></textarea>
+                                          <span class="description-error" style="display: none; color: red;"> description is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Pub Date</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control pub_date" type="date" name="pub_date" placeholder="pub_date">
+                                            <span class="pub-date-error" style="display: none; color: red;"> pubdate is required</span>
+                                        </div>
+                                    </div>
+                                       <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Image</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control " type="file" name="img" placeholder="Uploat image" accept="image/.jpg, .png">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-10 ml-sm-auto">
+                                            <button class="btn btn-info submit-btn" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+                <div class="ibox">
+                    
+                </div>
+           
+            </div>
+         
+       {% endblock %}
+
+
+      {% block extrascript %}
+      <script type="text/javascript">
+          
+        $('.submit-btn').on('click', function(){
+            let headline = ($('.headline').val()).trim();
+            let description = $('.description').val().trim();
+            let pub_date = $('.pub_date').val().trim();
+
+            let status = true;
+
+            if (headline == null || headline == ''){
+                $('.headline-error').css('display', 'block');
+                status = false;
+                console.log(headline,'==========headline')
+            }
+            else{
+                $('.headline-error').css('display', 'none');
+            }
+
+            if (description == null || description == ''){
+                $('.description-error').css('display', 'block');
+                status = false;
+                console.log(description,'==========description')
+            }
+            else{
+                $('.description-error').css('display', 'none');
+            }
+
+            if (pub_date == null || pub_date == ''){
+                $('.pub-date-error').css('display', 'block');
+                status = false;
+                console.log(pub_date,'==========pub_date')
+            }
+            else{
+                $('.pub-date-error').css('display', 'none');
+            }
+            return status
+        })
+        </script>
+{% endblock %}

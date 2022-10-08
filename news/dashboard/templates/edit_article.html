@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+ {% block content %}
+    
+    <div class="content-wrapper">
+             
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-center alert-dismissible" style="margin-top: 10px;" role="alert">
+                    {{ message }}
+                </div>
+             {% endfor %}
+         {% endif %}
+
+            <!-- START PAGE CONTENT-->
+            <div class="page-heading">
+                <h1 class="page-title">Edit Article</h1>
+            </div>
+            <div class="page-content fade-in-up">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-head">
+                                <div class="ibox-title">Edit Article</div>
+                                <div class="ibox-tools">
+                                   
+                                </div>
+                            </div>
+                            <div class="ibox-body">
+                                <form class="form-horizontal" action="{% url 'edit' Gradess.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Headline</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control headline" type="text"  name="headline" placeholder="headline" value="{{Gradess.headline}}">
+                                            <span class="headline-error" style="display: none; color: red;"> headline is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Discription</label>
+                                        <div class="col-sm-10">
+                                          
+                                            <textarea class="form-control description" name="description" placeholder="description"rows="3">{{Gradess.discription}}</textarea>
+                                         
+                                            <span class="discription-error" style="display: none; color: red;"> description is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Pub Date</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control pub_date" type="date"  name="pub_date" placeholder="pubdate"  value="{{Gradess.pub_date|date:'Y-m-d'}}"><span class="pub-date-error" style="display: none; color: red;"> pubdate is required</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row">
+                                        <div class="col-sm-10 ml-sm-auto">
+                                            <button class="btn btn-info update-btn" type="submit">update</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+                <div class="ibox">
+                    
+                </div>
+           
+            </div>
+         
+       {% endblock %}
+
+
+       {% block extrascript %}
+      <script type="text/javascript">
+          
+        $('.update-btn').on('click', function(){
+            let headline = ($('.headline').val()).trim();
+            let discription = $('.discription').val().trim();
+            let pub_date = $('.pub_date').val().trim();
+
+            let status = true;
+
+            if (headline == null || headline == ''){
+                $('.headline-error').css('display', 'block');
+                status = false;
+                console.log(headline,'==========headline')
+            }
+            else{
+                $('.headline-error').css('display', 'none');
+            }
+
+            if (discription == null || discription == ''){
+                $('.description-error').css('display', 'block');
+                status = false;
+                console.log(description,'==========description')
+            }
+            else{
+                $('.discription-error').css('display', 'none');
+            }
+
+            if (pub_date == null || pub_date == ''){
+                $('.pub-date-error').css('display', 'block');
+                status = false;
+                console.log(pub_date,'==========pub_date')
+            }
+            else{
+                $('.pub-date-error').css('display', 'none');
+            }
+            return status
+        })
+        </script>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+ {% block content %}
+    
+    <div class="content-wrapper">
+             
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-center alert-dismissible" style="margin-top: 10px;" role="alert">
+                    {{ message }}
+                </div>
+             {% endfor %}
+         {% endif %}
+
+            <!-- START PAGE CONTENT-->
+            <div class="page-heading">
+                <h1 class="page-title">Add Repoter</h1>
+            </div>
+            <div class="page-content fade-in-up">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-md-6">
+                        <div class="ibox">
+                            <div class="ibox-head">
+                                <div class="ibox-title">Add Repoter</div>
+                                <div class="ibox-tools">
+                                    <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
+                                    <a class="fullscreen-link"><i class="fa fa-expand"></i></a>
+                                </div>
+                            </div>
+                            <div class="ibox-body">
+                                <form class="form-horizontal" action="{% url 'add_reporter' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Username</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control username" type="text"  name="Username" placeholder="Username">
+                                            <span class="username-error" style="display: none; color: red;"> Username is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Email</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control email" type="text"  name="Email" placeholder="Email address">
+                                            <span class="email-error" style="display: none; color: red;"> Email is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Firstname</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control firstname" type="text"  name="first_name" placeholder="Firstname">
+                                            <span class="firstname-error" style="display: none; color: red;"> Firstname is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Lastname</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control lastname" type="text" name="last_name" placeholder="Lastname">
+                                            <span class="lastname-error" style="display: none; color: red;"> Lastname is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Password</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control password" type="password" name="password" placeholder="Password">
+                                            <span class="password-error" style="display: none; color: red;"> Password is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Confirm Password</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control confirm-password" type="password" name="password" placeholder="Confirm Password">
+                                            <span class="confirm-error" style="display: none; color: red;"> ConfirmPassword is required</span>
+                                            <span class="password-match-error" style="display: none; color: red;"> Password dont match</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-10 ml-sm-auto">
+                                            <label class="ui-checkbox ui-checkbox-gray">
+                                                <input type="checkbox">
+                                                <span class="input-span"></span>Remamber me</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-10 ml-sm-auto">
+                                            <button class="btn btn-info submit-btn" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+                <div class="ibox">
+                    
+                </div>
+           
+            </div>
+         
+       {% endblock %}
+
+      {% block extrascript %}
+      <script type="text/javascript">
+          
+        $('.submit-btn').on('click', function(){
+            let username = ($('.username').val()).trim();
+            let password = $('.password').val().trim();
+            let confirm_password = $('.confirm-password').val().trim();
+            let email = $('.email').val().trim();
+            let firstname = $('.firstname').val().trim();
+            let lastname = $('.lastname').val().trim();
+            console.log(password.length)
+
+            let status = true;
+
+            if (username == null || username == ''){
+                $('.username-error').css('display', 'block');
+                status = false;
+                console.log(username,'==========username')
+            }
+            else{
+                $('.username-error').css('display', 'none');
+            }
+
+            if (password == null || password == ''){
+                $('.password-error').css('display', 'block');
+                status = false;
+                console.log(password,'==========password')
+            }
+            else{
+                $('.password-error').css('display', 'none');
+            }
+
+
+            if (confirm_password == null || confirm_password == '' ){
+                $('.confirm-error').css('display', 'block');
+                status = false;
+                console.log(confirm_password,'==========confirm_password')
+            }
+            else{
+                $('.confirm-error').css('display', 'none');
+            }
+
+
+             if (password == confirm_password ){
+                $('.password-match-error').css('display', 'none');
+          
+                console.log(confirm_password,'==========confirm_password')
+            }
+            else{ 
+                status = false;
+                $('.password-match-error').css('display', 'block');
+            }
+
+
+            if (email == null || email == ''){
+                $('.email-error').css('display', 'block');
+                status = false;
+                console.log(email,'==========email')
+            }
+            else{
+                $('.email-error').css('display', 'none');
+            }
+
+
+            if (firstname == null || firstname == ''){
+                $('.firstname-error').css('display', 'block');
+                status = false;
+                // console.log(firstname,'==========firstname')
+            }
+            else{
+                $('.firstname-error').css('display', 'none');
+            }
+
+
+            if (lastname == null || lastname == ''){
+                $('.lastname-error').css('display', 'block');
+                status = false;
+                // console.log(lastname,'==========lastname')
+            }
+            else{
+                $('.lastname-error').css('display', 'none');
+            }
+            return status
+            console.log(status,'++++++++status')
+               
+        });
+      </script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Admincast bootstrap 4 &amp; angular 5 admin template, Шаблон админки | Form</title>
+    <!-- GLOBAL MAINLY STYLES-->
+    <link href="{% static 'vendors/bootstrap/dist/css/bootstrap.min.css'%}" rel="stylesheet" />
+    <link href="{% static 'vendors/font-awesome/css/font-awesome.min.css'%}" rel="stylesheet" />
+    <link href="{% static 'vendors/themify-icons/css/themify-icons.css'%}" rel="stylesheet" />
+    <link href="{% static 'vendors/DataTables/datatables.min.css'%}" rel="stylesheet" />
+    <!-- PLUGINS STYLES-->
+    <!-- THEME STYLES-->
+    <link href="{% static 'css/main.min.css'%}" rel="stylesheet" />
+    <!-- PAGE LEVEL STYLES-->
+</head>
+
+<body class="fixed-navbar">
+    <div class="page-wrapper">
+    
+        {% include 'header.html' %}
+        {% include 'sidebar.html' %}
+ 
+ {% block content %}
+      {% endblock %}
+
+       {% include 'footer.html' %}
+
+
+   <!-- END PAGA BACKDROPS-->
+    <!-- CORE PLUGINS-->
+    <script src="{% static 'vendors/jquery/dist/jquery.min.js'%}" type="text/javascript"></script>
+    <script src="{% static 'vendors/popper.js/dist/umd/popper.min.js'%}" type="text/javascript"></script>
+    <script src="{% static 'vendors/bootstrap/dist/js/bootstrap.min.js'%}" type="text/javascript"></script>
+    <script src="{% static 'vendors/metisMenu/dist/metisMenu.min.js'%}" type="text/javascript"></script>
+    <script src="{% static 'vendors/jquery-slimscroll/jquery.slimscroll.min.js'%}" type="text/javascript"></script>
+    <script src="{% static 'vendors/DataTables/datatables.min.js'%}" type="text/javascript"></script>
+    <!-- PAGE LEVEL PLUGINS-->
+    <!-- CORE SCRIPTS-->
+    <script src="{% static 'js/app.min.js'%}" type="text/javascript"></script>
+    <!-- PAGE LEVEL SCRIPTS-->
+
+    <script type="text/javascript">
+        $(function() {
+            $('#example-table').dataTable();
+        })
+    </script>
+
+    {% block extrascript %}
+{% endblock %}
+    
+
+
+</body>
+
+</html>
