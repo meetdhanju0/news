@@ -19,4 +19,8 @@ urlpatterns = [
 
 
      path('status/<int:id>', ArticleStatus.as_view(), name='status'),
+
+
+    path('Edit-profile', EditProfile.as_view(), name='Edit_profile'), 
+
 ]

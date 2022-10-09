@@ -12,12 +12,10 @@
                 </div>
              {% endfor %}
          {% endif %}
-        <div class="alert alert-success text-center alert-dismissible" style="margin-top: 10px; display:none;" role="alert"></div>
-        <div class="alert alert-danger text-center alert-dismissible" style="margin-top: 10px; display:none;" role="alert"></div>
 
             <!-- START PAGE CONTENT-->
             <div class="page-heading">
-                <h1 class="page-title">Add Repoter</h1>
+                <h1 class="page-title">Edit Data</h1>
             </div>
             <div class="page-content fade-in-up">
                 <div class="row">
@@ -25,40 +23,34 @@
                     <div class="col-md-6">
                         <div class="ibox">
                             <div class="ibox-head">
-                                <div class="ibox-title">Add Repoter</div>
+                                <div class="ibox-title">Edit Data</div>
                                 <div class="ibox-tools">
                                     <a class="ibox-collapse"><i class="fa fa-minus"></i></a>
                                     <a class="fullscreen-link"><i class="fa fa-expand"></i></a>
                                 </div>
                             </div>
                             <div class="ibox-body">
-                                <form class="form-horizontal">
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Username</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control username" type="text"  name="Username" placeholder="Username">
-                                            <span class="username-error" style="display: none; color: red;"> Username is required</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label">Email</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control email" type="text"  name="Email" placeholder="Email address">
-                                            <span class="email-error" style="display: none; color: red;"> Email is required</span>
-                                        </div>
-                                    </div>
+                                <form class="form-horizontal" action="{% url 'Edit_profile' %}" method="POST">
+                                    {% csrf_token %}
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Firstname</label>
                                         <div class="col-sm-10">
-                                            <input class="form-control firstname" type="text"  name="first_name" placeholder="Firstname">
+                                            <input class="form-control firstname" type="text"  name="first_name" placeholder="Firstname" value="{{Grades.first_name}}">
                                             <span class="firstname-error" style="display: none; color: red;"> Firstname is required</span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-sm-2 col-form-label">Lastname</label>
                                         <div class="col-sm-10">
-                                            <input class="form-control lastname" type="text" name="last_name" placeholder="Lastname">
+                                            <input class="form-control lastname" type="text" name="last_name" placeholder="Lastname" value="{{Grades.last_name}}">
                                             <span class="lastname-error" style="display: none; color: red;"> Lastname is required</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Email</label>
+                                        <div class="col-sm-10">
+                                            <input class="form-control email" type="text" name="email" placeholder="Email" value="{{Grades.email}}">
+                                            <span class="email-error" style="display: none; color: red;"> Email is required</span>
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -78,14 +70,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-10 ml-sm-auto">
-                                            <label class="ui-checkbox ui-checkbox-gray">
-                                                <input type="checkbox">
-                                                <span class="input-span"></span>Remamber me</label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-10 ml-sm-auto">
-                                            <button class="btn btn-info submit-btn" type="button">Submit</button>
+                                            <button class="btn btn-info submit-btn" type="submit">update</button>
                                         </div>
                                     </div>
                                 </form>
@@ -106,7 +91,6 @@
       <script type="text/javascript">
           
         $('.submit-btn').on('click', function(){
-            let username = ($('.username').val()).trim();
             let password = $('.password').val().trim();
             let confirm_password = $('.confirm-password').val().trim();
             let email = $('.email').val().trim();
@@ -116,34 +100,10 @@
 
             let status = true;
 
-            if (username == null || username == ''){
-                $('.username-error').css('display', 'block');
-                status = false;
-            }
-            else{
-                $('.username-error').css('display', 'none');
-            }
-
-            if (password == null || password == ''){
-                $('.password-error').css('display', 'block');
-                status = false;
-            }
-            else{
-                $('.password-error').css('display', 'none');
-            }
-
-
-            if (confirm_password == null || confirm_password == '' ){
-                $('.confirm-error').css('display', 'block');
-                status = false;
-            }
-            else{
-                $('.confirm-error').css('display', 'none');
-            }
-
-
              if (password == confirm_password ){
                 $('.password-match-error').css('display', 'none');
+          
+                console.log(confirm_password,'==========confirm_password')
             }
             else{ 
                 status = false;
@@ -154,6 +114,7 @@
             if (email == null || email == ''){
                 $('.email-error').css('display', 'block');
                 status = false;
+                console.log(email,'==========email')
             }
             else{
                 $('.email-error').css('display', 'none');
@@ -163,6 +124,7 @@
             if (firstname == null || firstname == ''){
                 $('.firstname-error').css('display', 'block');
                 status = false;
+                // console.log(firstname,'==========firstname')
             }
             else{
                 $('.firstname-error').css('display', 'none');
@@ -172,40 +134,13 @@
             if (lastname == null || lastname == ''){
                 $('.lastname-error').css('display', 'block');
                 status = false;
+                // console.log(lastname,'==========lastname')
             }
             else{
                 $('.lastname-error').css('display', 'none');
             }
-            if (status == true){
-                $.ajax({
-                  url: '{% url "add_reporter" %}',
-                  type: 'POST',
-                  data:{
-                    'Username':username,
-                    'first_name':firstname,
-                    'last_name': lastname,
-                    'Email': email,
-                    'password': password,
-                    'csrfmiddlewaretoken':'{{ csrf_token }}',
-                  },
-                  success: function(response){
-                    if (response.status == true){
-                      $('.alert-danger').css('display', 'none');
-                      $('.alert-success').css('display', 'block');
-                      $('.alert-success').text(response.msg);
-                      setTimeout(function(){window.location = "{% url 'reporter_list' %}" }, 3000);
-                    }
-                    else{
-                      $('.alert-danger').css('display', 'block');
-                      $('.alert-danger').text(response.msg);
-                      return false
-                    }
-
-                  }
-                })
-            }
             return status
-            
+            console.log(status,'++++++++status')
                
         });
       </script>

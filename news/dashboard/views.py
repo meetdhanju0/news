@@ -5,9 +5,10 @@ from django.views.generic import TemplateView
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.urls import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from .models import *
-
+from django.contrib.auth import login, authenticate, logout
+import json
 
 
 
@@ -18,22 +19,16 @@ class AddReporter(TemplateView):
         return render(request, self.template_name, locals())
 
     def post(self, request):
+        response = {}
         Username = request.POST.get('Username')
         first = request.POST.get('first_name')
         last = request.POST.get('last_name')
         email = request.POST.get('Email')
         passwor = request.POST.get('password')
-        print(Username,'=====Username')
-        print(first,'=====first')
-        print(last,'=====last')
-        print(email,'=====email')
-        print(passwor,'=====password')
         try:
             filter_user = User.objects.get(username = Username)
-            # filters = User.objects.get(password = passwor)
-            print(filter_user,'========filter_user')
-            # print(filters,'========filters')            
-            messages.info(request, 'username already exists.')
+            response['status'] = False
+            response['msg'] = 'username already exists.'
 
         except User.DoesNotExist:
             student = User.objects.create(
@@ -44,49 +39,17 @@ class AddReporter(TemplateView):
                 )
             student.set_password(passwor)
             student.save()
+            response['status'] = True
+            response['msg'] = 'Reporter Successfully added.'
 
-            messages.success(request, 'Reporter Successfully added.')
-        return HttpResponseRedirect(reverse('add_reporter'))
-
-
-# class AddArticle(TemplateView):
-#     template_name = "article.html"
-
-#     def get(self, request):
-#         # reporters = Reporter.objects.all()
-#         return render(request, self.template_name, locals())
-
-
+        return HttpResponse(json.dumps(response), content_type = 'application/json')
 
 
 class ReporterList(TemplateView):
     template_name = "reporter_list.html"
 
     def get(self, request):
-        # Username = request.GET.get('Username')
-        # print(Username,'======Username')
-        # first = request.GET.get('first_name')
-        # print(first,'=======first')
-        # last = request.GET.get('last_name')
-        # print(last,'=======last')
-        # add = request.GET.get('address')
-        # print(add,'======add')
-        # emails = request.GET.get('mail')
-        # print(emails,'=====email')
-
         reporter = User.objects.filter(is_superuser = False)
-        print(reporter,'======reporter')
-        # if first:
-        #     reporter = User.objects.filter(firstname__contains = first)
-        # elif last:
-        #     reporter = User.objects.filter(lastname__contains = last)
-        # elif add:
-        #     reporter = User.objects.filter(address__contains = add)
-        # elif emails:
-        #     reporter = User.objects.filter(email__contains = emails)
-        # else:
-        #     reporter = User.objects.all()
-
 
         return render(request, self.template_name, locals())
 
@@ -233,5 +196,59 @@ class ArticleStatus(TemplateView):
 
 
 
+class EditProfile(TemplateView):
+    template_name = "edit_profile.html"
+    
+    def get(self, request):
+        Grades = User.objects.get(id = request.user.id)
+        return render(request, self.template_name, locals())
+
+    
+    def get(self, request, id):
+        if  request.user.is_superuser == True:
+                article = Article.objects.get(id=id)
+                if article.status:
+                    article.status = False
+                else:
+                    article.status = True
+                article.save()
+            
+                return HttpResponseRedirect(reverse('article_list'))
+        
 
 
+
+class EditProfile(TemplateView):
+    template_name = "edit_profile.html"
+    
+    def get(self, request):
+        try:
+            Grades = User.objects.get(id = request.user.id)  
+        except Exception as e:
+            print(e)
+
+        return render(request, self.template_name, locals())
+
+    
+    def post(self, request):
+        first = request.POST.get('first_name')
+        last = request.POST.get('last_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+       
+
+        Grades = User.objects.get(id = request.user.id)
+        Grades.first_name = first
+        Grades.last_name = last
+        Grades.email = email
+        Grades.save()
+        if password:
+            Grades.set_password(password)
+            Grades.save()
+            login(request, Grades, backend='django.contrib.auth.backends.ModelBackend')
+        messages.success(request, 'Successfully update.')
+        return HttpResponseRedirect(reverse('Edit_profile'))
+
+
+
+         
