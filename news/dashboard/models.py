@@ -14,3 +14,29 @@ class Article(models.Model):
     def __str__(self):
         return self.headline
 
+class ForgotPassword(models.Model):
+    code = models.CharField(max_length=255)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+##################################################################################################
+
+class Home(models.Model):
+    username = models.CharField(max_length = 100)
+    email = models.EmailField(null=True, blank=True)
+    first_name = models.CharField(max_length = 50)
+
+    def __str__(self):
+        return self.first_name
+
+
+
+class Stu(models.Model):
+    user = models.ForeignKey(Home,on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length = 10 )
+    last_name = models.CharField(max_length = 50)
+
+    def __str__(self):
+        return self.last_name
+
+

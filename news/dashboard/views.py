@@ -9,13 +9,16 @@ from django.http import HttpResponseRedirect, HttpResponse
 from .models import *
 from django.contrib.auth import login, authenticate, logout
 import json
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-
-class AddReporter(TemplateView):
+class AddReporter(LoginRequiredMixin,TemplateView):
+    login_url = '/login'
     template_name = "add_reporter.html"
 
     def get(self, request):
+        active_reporter = 'active'
+        active_add = 'active'
         return render(request, self.template_name, locals())
 
     def post(self, request):
@@ -45,17 +48,21 @@ class AddReporter(TemplateView):
         return HttpResponse(json.dumps(response), content_type = 'application/json')
 
 
-class ReporterList(TemplateView):
+class ReporterList(LoginRequiredMixin,TemplateView):
+    login_url = '/login'
     template_name = "reporter_list.html"
 
     def get(self, request):
+        active_reporter = 'active'
+        active_list = 'active'
         reporter = User.objects.filter(is_superuser = False)
 
         return render(request, self.template_name, locals())
 
 
 
-class Editreporter(TemplateView):
+class Editreporter(LoginRequiredMixin,TemplateView):
+    login_url = '/login'
     template_name = "edit_reporter.html"
     
     def get(self, request, id):
@@ -65,13 +72,9 @@ class Editreporter(TemplateView):
     
     def post(self, request, id):
         Users = request.POST.get('Username')
-        print(Users,'=======Users')
         first = request.POST.get('first_name')
-        print(first,'===========first_name')
         last = request.POST.get('last_name')
-        print(last,'++++++++++last_name')
         email = request.POST.get('Email')
-        print(email,"======email")
        
 
         Grades = User.objects.get(id=id)
@@ -85,7 +88,8 @@ class Editreporter(TemplateView):
 
 
 
-class Deletereporter(TemplateView):
+class Deletereporter(LoginRequiredMixin,TemplateView):
+    login_url = '/login'
     template_name = "reporter_list.html"
     
     def get(self, request, id):
@@ -96,10 +100,13 @@ class Deletereporter(TemplateView):
 
 
 
-class AddArticle(TemplateView):
+class AddArticle(LoginRequiredMixin,TemplateView):
+    login_url = '/login'
     template_name = "add_article.html"
 
     def get(self, request):
+        active_article = 'active'
+        active_Add = 'active'
         return render(request, self.template_name, locals())
 
     def post(self, request):
@@ -126,10 +133,13 @@ class AddArticle(TemplateView):
 
 
 
-class ArticleList(TemplateView):
+class ArticleList(LoginRequiredMixin,TemplateView):
+    login_url = '/login'
     template_name = "article_list.html"
 
     def get(self, request):
+        active_article = 'active'
+        active_List = 'active'
         if request.user.is_superuser:
             articles = Article.objects.all()
         else:
@@ -140,7 +150,8 @@ class ArticleList(TemplateView):
 
 
 
-class EditArticle(TemplateView):
+class EditArticle(LoginRequiredMixin,TemplateView):
+    login_url = '/login'
     template_name = "edit_article.html"
     
     def get(self, request, id):
@@ -150,11 +161,8 @@ class EditArticle(TemplateView):
     
     def post(self, request, id):
         head = request.POST.get('headline')
-        print(head,'=======headline')
         des = request.POST.get('description')
-        print(des,'===========des')
         pub = request.POST.get('pub_date')
-        print(pub,'++++++++++pub_date')
        
        
 
@@ -167,7 +175,8 @@ class EditArticle(TemplateView):
 
 
 
-class DeleteArticle(TemplateView):
+class DeleteArticle(LoginRequiredMixin,TemplateView):
+    login_url = '/login'
     template_name = "article_list.html"
 
     
@@ -178,7 +187,8 @@ class DeleteArticle(TemplateView):
 
 
 
-class ArticleStatus(TemplateView):
+class ArticleStatus(LoginRequiredMixin,TemplateView):
+    login_url = '/login'
     template_name = "article_list.html"
 
     
@@ -196,29 +206,8 @@ class ArticleStatus(TemplateView):
 
 
 
-class EditProfile(TemplateView):
-    template_name = "edit_profile.html"
-    
-    def get(self, request):
-        Grades = User.objects.get(id = request.user.id)
-        return render(request, self.template_name, locals())
-
-    
-    def get(self, request, id):
-        if  request.user.is_superuser == True:
-                article = Article.objects.get(id=id)
-                if article.status:
-                    article.status = False
-                else:
-                    article.status = True
-                article.save()
-            
-                return HttpResponseRedirect(reverse('article_list'))
-        
-
-
-
-class EditProfile(TemplateView):
+class EditProfile(LoginRequiredMixin,TemplateView):
+    login_url = '/login'
     template_name = "edit_profile.html"
     
     def get(self, request):
@@ -250,5 +239,86 @@ class EditProfile(TemplateView):
         return HttpResponseRedirect(reverse('Edit_profile'))
 
 
+########################  using ForeignKey  ######################## 
+                
 
-         
+class AddHome(TemplateView):
+    template_name = "home.html"
+
+
+    def get(self,request):
+        return render(request, self.template_name, locals())
+
+
+    def post(self,request):
+        user = request.POST.get('username')
+        email = request.POST.get('email')
+        first = request.POST.get('first_name')
+    
+
+        homes = Home.objects.create(
+            username = user,
+            email = email,
+            first_name = first
+            )
+
+        messages.success(request, 'Home Successfully added.')
+        return HttpResponseRedirect(reverse('add_home'))
+
+
+
+class AddStudent(TemplateView):
+    template_name = "students.html"
+
+
+    def get(self,request):
+        stud = Home.objects.all()
+        return render(request,self.template_name,locals())
+
+
+    def post(self,request):
+        pho_num = request.POST.get('phone_number')
+        last = request.POST.get('last_name')
+        user_id = request.POST.get('Home')
+       
+
+
+
+        stu = Stu.objects.create(
+            phone_number = pho_num,
+            last_name = last,
+            user_id = user_id
+            )
+
+        messages.success(request, 'student Successfully added.')
+        return HttpResponseRedirect(reverse('add_student'))
+
+
+
+
+
+# class Addtech(TemplateView):
+#     template_name = ".html"
+
+
+#     def get(self,request):
+#         stud = Home.objects.all()
+#         return render(request,self.template_name,locals())
+
+
+#     def post(self,request):
+#         pho_num = request.POST.get('phone_number')
+#         last = request.POST.get('last_name')
+#         user_id = request.POST.get('Home')
+       
+
+
+
+#         stu = Stu.objects.create(
+#             phone_number = pho_num,
+#             last_name = last,
+#             user_id = user_id
+#             )
+
+#         messages.success(request, 'student Successfully added.')
+#         return HttpResponseRedirect(reverse('add_student'))

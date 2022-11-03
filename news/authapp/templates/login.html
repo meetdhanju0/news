@@ -51,7 +51,7 @@
                 <label class="ui-checkbox ui-checkbox-info">
                     <input type="checkbox">
                     <span class="input-span"></span>Remember me</label>
-                <a href="forgot_password.html">Forgot password?</a>
+                <a href="{% url 'forgot_password' %}">Forgot password?</a>
             </div>
             <div class="form-group">
                 <button class="btn btn-info btn-block login-btn" type="submit">Login</button>
@@ -67,7 +67,7 @@
                 <a class="btn btn-social-icon btn-vk" href="javascript:;"><i class="fa fa-vk"></i></a>
             </div>
             <div class="text-center">Not a member?
-                <a class="color-blue" href="register.html">Create accaunt</a>
+                <a class="color-blue" href="{% url 'signup' %}">Create accaunt</a>
             </div>
         </form>
     </div>

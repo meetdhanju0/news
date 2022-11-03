@@ -23,4 +23,8 @@ urlpatterns = [
 
     path('Edit-profile', EditProfile.as_view(), name='Edit_profile'), 
 
+    path('add-home', AddHome.as_view(), name='add_home'),
+    path('add-student', AddStudent.as_view(), name='add_student'),
+
+
 ]

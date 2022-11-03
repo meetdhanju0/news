@@ -103,14 +103,13 @@
             let email = $('.email').val().trim();
             let firstname = $('.firstname').val().trim();
             let lastname = $('.lastname').val().trim();
-            console.log(password.length)
+            
 
             let status = true;
 
             if (username == null || username == ''){
                 $('.username-error').css('display', 'block');
                 status = false;
-                console.log(username,'==========username')
             }
             else{
                 $('.username-error').css('display', 'none');
@@ -121,7 +120,6 @@
             if (password == confirm_password ){
                 $('.password-match-error').css('display', 'none');
           
-                console.log(confirm_password,'==========confirm_password')
             }
             else{ 
                 status = false;
@@ -132,7 +130,6 @@
             if (email == null || email == ''){
                 $('.email-error').css('display', 'block');
                 status = false;
-                console.log(email,'==========email')
             }
             else{
                 $('.email-error').css('display', 'none');
@@ -142,7 +139,6 @@
             if (firstname == null || firstname == ''){
                 $('.firstname-error').css('display', 'block');
                 status = false;
-                // console.log(firstname,'==========firstname')
             }
             else{
                 $('.firstname-error').css('display', 'none');
@@ -152,13 +148,11 @@
             if (lastname == null || lastname == ''){
                 $('.lastname-error').css('display', 'block');
                 status = false;
-                // console.log(lastname,'==========lastname')
             }
             else{
                 $('.lastname-error').css('display', 'none');
             }
             return status
-            console.log(status,'++++++++status')
                
         });
       </script>

@@ -7,7 +7,7 @@
                         <img src="{% static 'img/admin-avatar.png'%}" width="45px" />
                     </div>
                     <div class="admin-info">
-                        <div class="font-strong">Manmeet Singh</div><small>Administrator</small></div>
+                        <div class="font-strong">{{Grades.first_name}}  {{Grades.last_name}}</div><small>Administrator</small></div>
                 </div>
                 <ul class="side-menu metismenu">
                     <li>
@@ -49,27 +49,27 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="active">
+                    <li class="{{active_reporter}}">
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-edit"></i>
                             <span class="nav-label">Reporters</span><i class="fa fa-angle-left arrow"></i></a>
                         <ul class="nav-2-level collapse in">
                             <li>
-                                <a class="active" href="{% url 'reporter_list' %}">Reporter List</a>
+                                <a class="{{active_list}}" href="{% url 'reporter_list' %}">Reporter List</a>
                             </li>
                             <li>
-                                <a href="{% url 'add_reporter' %}">Add Reporter</a>
+                                <a class="{{active_add}}" href="{% url 'add_reporter' %}">Add Reporter</a>
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="{{active_article}}">
                         <a href="javascript:;"><i class="sidebar-item-icon fa fa-table"></i>
                             <span class="nav-label">Articles</span><i class="fa fa-angle-left arrow"></i></a>
-                        <ul class="nav-2-level collapse">
+                        <ul class="nav-2-level collapse in">
                             <li>
-                                <a href="{% url 'article_list' %}">Article List</a>
+                                <a class="{{active_List}}" href="{% url 'article_list' %}">Article List</a>
                             </li>
                             <li>
-                                <a href="{% url 'add_article' %}">Add Article </a>
+                                <a class="{{active_Add}}" href="{% url 'add_article' %}">Add Article </a>
                             </li>
                         </ul>
                     </li>
