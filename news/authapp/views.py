@@ -11,17 +11,8 @@ from dashboard.models import *
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.mail import send_mail
 # Create your views here.
-
-
-
-
-
-# class LoginView(TemplateView):
-#     template_name = "login.html"
-
-#     def get(self, request):
-#         return render(request, self.template_name, locals())
 
 
 
@@ -76,13 +67,24 @@ class ForgotPass(TemplateView):
                 code = code,
                 user = filter_user,
                 )
-
-
+            body = f'<a href="{request.scheme}://{request.get_host()}/change-password/{code}">Link</a>'
+            # print("absolute uri: ", request.scheme)
+            # print(dir(request))
+            send_mail(
+                "Password Reset",
+                body,
+                "manmeet.dev@gmail.com",
+                ["meetdhanju891@gmail.com"],
+                fail_silently=False,
+            )
+            messages.success(request, 'Mail Send Successfully.')
         except User.DoesNotExist:
             messages.info(request, 'Password update success.')
 
 
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse('forgot_password'))
+
+
 
 
 
@@ -101,16 +103,15 @@ class EditPassword(TemplateView):
         try:
             Grades = ForgotPassword.objects.get(code=code)
             user = Grades.user 
-            print(user,'=====user')
             user.set_password(password)
             user.save()
             Grades.delete()
         except ForgotPassword.DoesNotExist:
             messages.error(request,'some error')
-
-                                                    
+                                             
         return HttpResponseRedirect(reverse('login'))
       
+
       
 class LogoutView(TemplateView):
     

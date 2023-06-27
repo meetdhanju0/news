@@ -1,0 +1,7 @@
+create DB in mysql
+1) create database <<database_name>>;
+2) CREATE USER <<'arsh'@'localhost'>> IDENTIFIED   BY <<'technologies@'>>;
+3) GRANT ALL PRIVILEGES ON *.* TO 'arsh'@'localhost' WITH GRANT OPTION;
+4) FLUSH PRIVILEGES;
+
+CREATE USER 'arsh'@'localhost' IDENTIFIED BY 'technologies@';
