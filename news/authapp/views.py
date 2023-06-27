@@ -43,6 +43,11 @@ class LoginView(TemplateView):
             messages.error(request, str(e))
 
         return HttpResponseRedirect(reverse('login'))
+    
+
+
+
+    
 
 
 
