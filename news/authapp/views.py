@@ -46,23 +46,22 @@ class LoginView(TemplateView):
     
 
 
-
-    
-
-
-
 class ForgotPass(TemplateView):
     template_name = "forgot_password.html"
 
     def get(self, request):
+        #email = request.GET.get('email')
         return render(request, self.template_name, locals())
 
 
     def post(self,request):
         email = request.POST.get('email')
+        print('email====',email)
+        # email = User.objects.filter(is_superuser = False)
 
         try:
             filter_user = User.objects.get(email = email)
+            print('filter_user===',filter_user)
             
             code = (random.randint(1000,9999))
 
@@ -72,24 +71,26 @@ class ForgotPass(TemplateView):
                 code = code,
                 user = filter_user,
                 )
-            body = f'<a href="{request.scheme}://{request.get_host()}/change-password/{code}">Link</a>'
+            body = f'<a href="{request.scheme}://{request.get_host()}/auth/change-password/{code}">Link</a>'
             # print("absolute uri: ", request.scheme)
             # print(dir(request))
             send_mail(
                 "Password Reset",
                 body,
                 "manmeet.dev@gmail.com",
-                ["meetdhanju891@gmail.com"],
+                [email],
                 fail_silently=False,
             )
             messages.success(request, 'Mail Send Successfully.')
         except User.DoesNotExist:
-            messages.info(request, 'Password update success.')
-
+            messages.error(request, 'Mail doesnot exists.')
+            # messages.info(request, 'Password update success.')
+        except Exception as e:
+            raise e
+            messages.success(request, str(e))
+            # messages.success(request, 'Mail Send Successfully.')
 
         return HttpResponseRedirect(reverse('forgot_password'))
-
-
 
 
 

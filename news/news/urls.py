@@ -20,8 +20,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("",include("authapp.urls")),
-    path("dashboard/",include("dashboard.urls")),
+    path("auth/",include("authapp.urls")),
+    path("",include("dashboard.urls")),
 ]
 
 

@@ -12,8 +12,9 @@ import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
+
 class AddReporter(LoginRequiredMixin,TemplateView):
-    login_url = '/login'
+    login_url = '/auth/login'
     template_name = "add_reporter.html"
 
     def get(self, request):
@@ -49,7 +50,7 @@ class AddReporter(LoginRequiredMixin,TemplateView):
 
 
 class ReporterList(LoginRequiredMixin,TemplateView):
-    login_url = '/login'
+    login_url = '/auth/login'
     template_name = "reporter_list.html"
 
     def get(self, request):
@@ -62,7 +63,7 @@ class ReporterList(LoginRequiredMixin,TemplateView):
 
 
 class Editreporter(LoginRequiredMixin,TemplateView):
-    login_url = '/login'
+    login_url = '/auth/login'
     template_name = "edit_reporter.html"
     
     def get(self, request, id):
@@ -86,10 +87,8 @@ class Editreporter(LoginRequiredMixin,TemplateView):
         return HttpResponseRedirect(reverse('reporter_list'))
 
 
-
-
 class Deletereporter(LoginRequiredMixin,TemplateView):
-    login_url = '/login'
+    login_url = '/auth/login'
     template_name = "reporter_list.html"
     
     def get(self, request, id):
@@ -101,7 +100,7 @@ class Deletereporter(LoginRequiredMixin,TemplateView):
 
 
 class AddArticle(LoginRequiredMixin,TemplateView):
-    login_url = '/login'
+    login_url = '/auth/login'
     template_name = "add_article.html"
 
     def get(self, request):
@@ -125,7 +124,7 @@ class AddArticle(LoginRequiredMixin,TemplateView):
             if img:
                 article.image = img
                 article.save()
-            messages.success(request, 'Reporter Successfully added.')
+            messages.success(request, 'Article Successfully added.')
         except Exception as e:
             messages.error(request, str(e))
  
@@ -134,7 +133,7 @@ class AddArticle(LoginRequiredMixin,TemplateView):
 
 
 class ArticleList(LoginRequiredMixin,TemplateView):
-    login_url = '/login'
+    login_url = '/auth/login'
     template_name = "article_list.html"
 
     def get(self, request):
@@ -151,7 +150,7 @@ class ArticleList(LoginRequiredMixin,TemplateView):
 
 
 class EditArticle(LoginRequiredMixin,TemplateView):
-    login_url = '/login'
+    login_url = '/auth/login'
     template_name = "edit_article.html"
     
     def get(self, request, id):
@@ -176,7 +175,7 @@ class EditArticle(LoginRequiredMixin,TemplateView):
 
 
 class DeleteArticle(LoginRequiredMixin,TemplateView):
-    login_url = '/login'
+    login_url = '/auth/login'
     template_name = "article_list.html"
 
     
@@ -188,7 +187,7 @@ class DeleteArticle(LoginRequiredMixin,TemplateView):
 
 
 class ArticleStatus(LoginRequiredMixin,TemplateView):
-    login_url = '/login'
+    login_url = '/auth/login'
     template_name = "article_list.html"
 
     
@@ -207,7 +206,7 @@ class ArticleStatus(LoginRequiredMixin,TemplateView):
 
 
 class EditProfile(LoginRequiredMixin,TemplateView):
-    login_url = '/login'
+    login_url = '/auth/login'
     template_name = "edit_profile.html"
     
     def get(self, request):
@@ -242,7 +241,8 @@ class EditProfile(LoginRequiredMixin,TemplateView):
 ########################  using ForeignKey  ######################## 
                 
 
-class AddHome(TemplateView):
+class AddHome(LoginRequiredMixin,TemplateView):
+    login_url ='/auth/login'
     template_name = "home.html"
 
 
@@ -293,32 +293,3 @@ class AddStudent(TemplateView):
         messages.success(request, 'student Successfully added.')
         return HttpResponseRedirect(reverse('add_student'))
 
-
-
-
-
-# class Addtech(TemplateView):
-#     template_name = ".html"
-
-
-#     def get(self,request):
-#         stud = Home.objects.all()
-#         return render(request,self.template_name,locals())
-
-
-#     def post(self,request):
-#         pho_num = request.POST.get('phone_number')
-#         last = request.POST.get('last_name')
-#         user_id = request.POST.get('Home')
-       
-
-
-
-#         stu = Stu.objects.create(
-#             phone_number = pho_num,
-#             last_name = last,
-#             user_id = user_id
-#             )
-
-#         messages.success(request, 'student Successfully added.')
-#         return HttpResponseRedirect(reverse('add_student'))

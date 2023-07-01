@@ -6,7 +6,7 @@
 
             {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} text-center alert-dismissible" style="margin-top: 10px;" role="alert">
+                <div class="alert alert-{{ message.tags }} text-center alert-dismissible" style="margin-top: 10px; color red" role="alert">
                     {{ message }}
                 </div>
              {% endfor %}
